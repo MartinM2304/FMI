@@ -1,0 +1,135 @@
+
+find <option> <directory> <expression> < action>
+find- dfs в дървото от файловата система
+
+търсене по шаблон - find -name 'string*' 		-всички файлове започващи със стринг - *стринг* -regex
+
+-name- case sensitive
+-iname- не е кейс сензитив
+
+-path  'bits*'- няма да стане,защото всички пътища започват с /usr/, за да работи трябва да подадем:
+-path '*bits*'
+
+
+izraz- expression-  в MAN страницата
+
+find <directory>-path '*bits*' - търси всички  в directory/*/bits/*
+
+-find ВРЪША път към открития файл, започващ от директорията която сме подали (ако не сме от текущата) А НЕ ОТ home
+
+find /usr -name 'grub' -  grub стартира ОС. -  Това ще ми върне директория
+=> find  връща както файлове, така и директории
+
+-maxDepth 0- дава само нашата директория , не файловете в нея
+
+-minDepth, maxDepth- 	ВИНАГИ В НАЧАЛОТО
+
+-links n- файлът има +-= hardLink-ако
+
+ls -lh- дава размерът в мегаБайтове
+
+в /srv/fmi-os/ е гит репотот съ задачите
+
+
+извадете с 42+ байтове:
+find ~ -type f -size +42c
+
+ВРЕМЕНА НА ФАЙЛ
+
+a- четено
+m- съдържанието на файла е променено
+c- метаданните на файла са променени
+
+
+-amin <n>- файловете които са аксеснати преди +-= n минути
+
+-anewer <reference>- спрямо някой файл дали е по скорошен
+
+	НА ИЗПИТ НА ХАРТИЯ - ЗАПИШИ ЦЯЛАТА МАН НА printf
+
+ACTIONS- действия
+
+
+find -type f -size +1c  -printf
+
+find -printf '%s %p\n'
+
+find ~ -type f ... -exec <command> ';'
+find ~ -type f -size 0c -exec echo Hello '{}' World';' // във всеки файл който намери ще изпише hello _fileName_ world
+
+Сборник
+2017-инф-02- зад 3
+find . -type f -size 0c -exec rm '{}'//името на файла ';'
+_____________________________________________________________________________________
+umask 0022- не се гледа първата 0 => 022 - това е забрана за правила => group НЕ МОЖЕ ДА ИМА w и other НЕ МОЖЕ ДА ИМА w
+2018 -SE-01- зад 6
+find . -type d -exec echo chmod o-w,g-w '{}' ';'
+
+_____________________________________________________________________________________
+PIPES
+
+head -n 3 /etc/passwd - принти първите 3 реда на файла иначе по дефолт е първите 10
+tail е същото но последните н реда
+
+комуникираме с конзолата с потоци- stdin stdout stderr
+
+пример:
+cat /dev/stdin
+
+можем head -n 3 /dev/stdin
+ще ни даде да пренапишем 3 реда и после ще спрямо
+
+
+echo 'Hello,world' > output.txt
+>output.txt - затрива съдържанието на файла (ако файла не съществува го създава)
+при exho 'Hello,again' > output.txt ще презапишем файла (отваряме в trunkate)
+
+за да не го презаписваме ползваме 
+echo 'Hello,again '>>output.txt
+
+пример:
+find -type f 2>output.txt - ще изпратим всичко от stderr в output.txt- 
+
+find -type f 2>output.txt 1>outputNotErrors.txt -ще изпрати грешките в Output.txt и stdout в outputNotErrors.txt
+
+find -type f 2>output.txt 1>output.txt - ще изпрати всичко в output.txt и ше омаже всичко, правилно е :
+
+find -type f >output.txt 2>&1 == find -type f &>output.txt - еквивалентно е (shortcut), праща err out, в един файл
+
+
+
+/dev/null- не пази нищо (черна дупка) - можем да пренасочваме грешките натам
+
+
+_____________________________________________________________________________________
+
+cowsay Hello -рисува крава :0
+cowsay- чака stdin
+
+Мога да направя cowsay <output.txt - това казва от къде да взима stdin
+
+с ctrl+D слагам край на stdin
+
+pipe- редирект stdout на една програма към stdin на друга програма ползва се символа |
+
+cat /etc/passwd | head -n 5
+
+find /home 2>/dev/null | head -n 5   - праща грешките в черната дупка, а принит първите 5 реда на финда
+
+
+printf '%f\n'- принти името на директорията без пътя
+
+find /etc -maxDepth 1 -type d | tail -n 10 >last10.txt
+
+
+ot git 02 - можем да решаваме всичко, от 03 някои неща
+
+head -n -4 - принти всички освен последните 4 
+
+
+точно 151 ред:
+head -n 151 /etc/passwd | tail -n 1
+
+последните 4 символа от 13ти реда
+
+head -n 13 /etc/passwd | tail -n -1| tail -c 5 -zaradi nov red
