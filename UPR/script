@@ -1,0 +1,9 @@
+#!/bin/bash
+
+my_var='think'
+cat "."
+
+echo 'Hello ! I ${my_var}the time is:'
+data
+
+

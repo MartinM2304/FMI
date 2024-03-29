@@ -1,0 +1,111 @@
+upr6- grep
+виж -F -x
+
+Винаги ползвай -E или -P
+
+grep -rc- мачва файловете в директория по съдържание 
+
+пример за grep и awk
+
+grep -rx ' ' . | awk -v 'FS=:' 'BEGIN {count =0}{count +=2} END {print count}'
+
+ps -e -o user=,pid=,rss= - таблица - връща таблица, искаме сумата на 3тата 
+колона, групирана по 1вата
+
+ps -e -o user=,pid=,rss= | awk '{counts[$1] +=$3} END {for (key in counts)
+{print key, counts[key]} }'  // counts e хеш мап ($1- ърва колона, $3- 3та колона)
+
+
+mktemp- прави временен файл
+mktemp -d - временна директория
+
+във vim- u за undo- ctrl+ e - обратното
+shift a- на края на реда и insert
+<Num> + G -отива на този ред
+5+l отива 5 пъти надясно
+$- май е края на реда
+dd- трие целия ред
+
+______________________________________________________
+виж v mode на vim
+
+
+script:
+#!/bin/bash
+
+my_var='know'
+
+echo "hello ${my_var}"
+date
+
+echo "name " ${0}"- името на скрипта
+echo "ARG 1: ${1}"
+echo "ARG 2: ${2}"
+echo "Total count is: ${#}"- брой подадени аргументи
+
+ецхо "All args: ${@} "- показва всички аргументи
+
+______________________________________________________
+
+stat -- printf '%g %i\n' file.txt | read group inode - това няма да работи
+echo "Group: ${group}; Inode: ${inode}"
+
+______________________________________________________
+echo <(date)- пише командата в някакъв файл и дава път към него// в случая ще 
+изпише името на този файл
+
+______________________________________________________
+read group inode < < stat -- printf '%g %i\n' file.txt  - това няма да работи
+echo "Group: ${group}; Inode: ${inode}"
+
+______________________________________________________
+[[-z ""]]
+echo ${?}- статуса на последната команда- 0 е true
+
+read- връща 0 чак като свърши  input
+
+while read a b; do
+	echo "a: ${a}"
+	echo "b: ${b}"
+done <test.txt- чете test.txt дума по дума(май)
+
+while read line; done
+	echo "line is "${line}"
+done <test.txt- принти всеки ред на test.txt
+
+______________________________________________________
+scripts// ТРЯБВА ДА ПРОВЕРЯВА ДАЛИ Е ИЗВИКАН ПРАВИЛНО
+SE 03.2
+
+#!/bin/bash
+
+if [[ "${#}" -ne 2]];then
+	echo "need 2 args"
+	exit 1
+fi
+
+# [[ "${#}" -eq 2 ]] || {echo "need 2 args"; exit 1;}
+// tova e analog na gornoto
+
+[[ "${1}" =~ ^[0-9]+$ ]] || {echo "must be number"; exit 1}// must have space before, after [[, ]]
+[[ "${2}" =~ ^[0-9]+$ ]] || {echo "must be number"; exit 1}
+[[ "${1}" -le "${2}" ]] || {echo "wrong order"; exit 2;}
+
+[[ -z "$(find . -mindepth 1 - type d)" ]] || {echo "we have dirs"; exit 3;}
+
+mkdir -p a b c  // ако съществуват не ги прави
+
+while read file_name; do
+	lines = "$(cat ${file_name) | wc -l"
+	echo "found name: ${file_name}, Lines : ${lines}";
+	
+	if [["${lines}"- lt "${1}"]];
+	then
+		mv "${file_name" a
+	elif [[ "${lines}" - lt "${2}"
+	then 
+		mv "{file_name}" b
+	else
+		mv "{file_name}" c
+	fi
+done< <(find . -maxdepth 1 -type f)
