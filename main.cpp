@@ -45,3 +45,18 @@ struct HTTPHeader
 	}
 
 };
+
+struct TCPHeader
+{
+	uint16_t sourcePort;
+	uint16_t destinationPort;
+	uint32_t sequenceNumber;
+	uint32_t acknowedgementNumber;
+	uint8_t length:4;
+	uint8_t reserved:6;
+	uint8_t codeBits:6;
+	uint16_t windowSize;
+	uint16_t checksum;
+	uint16_t urgent;
+	
+};
