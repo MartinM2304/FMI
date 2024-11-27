@@ -1,0 +1,109 @@
+24.03 - 14:00 лекция :(
+
+grep ползва regex - regex(7)
+ 
+Някои символи:
+.- match произволен символ пр: ba..- мачва всичко започващо с 'ba' и имащо 2 символа след това
+\t - tab
+\n - new line
+
+• $ фиксира край на ред
+• ^ фиксира начало на ред
+• \ > фиксира край на дума
+• \ < фиксира начало на дума
+• \ b фиксира начало или край на дума
+
+cat /etc/passwd | grep -E '^s'- нов ред започващ с s
+cat /etc/passwd | grep -E '\<Георги \>' - всички които завършват с Георги
+
+[abc]* = w DSTR:{a,b,c}*- aaaabaacccaabbbb...
+(abc)*- abcabcabc...
+
+cat /etc/passwd | grep -E 's[0-9]*' - съдържа s и произволен брой цифри
+
+211 slide- много важно !!!
+
+
+'\*'- escape *, match-ва *
+
+
+_______________________________________________________________________________________
+sed- чете текст, намира и променя
+
+whoami | sed 's/human/*****'- замени моето име с 5 звездички, но ще замени и думи които 
+съдържат моето име, трябва да ползваме:
+
+sed 's/\<human\>/*****/'  - wtf???
+
+s/- заменя това което подаваме ли???
+substitute/
+s/regex/text
+а накрая слагамe /g- за global, за да го направи навсякъде:
+s/regex/text/g
+
+заменя human s ***** в горния case:(в случая human е нашия nick)
+
+$ echo 'the quick fox' | sed 's/quick/fast'
+ще стане the fast fox
+
+cat file
+Parenthesis allow you to store matched
+patterns
+
+cat file | sed -E 's/[^aouei]{2,}/_/g':
+Pare_esia_o_u_u_ore_a_ed 
+pa_e_
+ Заменя всички негласни букви, които се срещат 2+ пъти една след друга с _
+ 
+ awk -F : '$5 ~ /\<Георги\> / {print $1}' където в 5та колона намериш Георги, 
+ изпринти първа колона
+ 
+ 
+ _______________________________________________________________________________________
+ 
+ Работа с процеси
+ 
+ HW:
+ 
+ 
+_______________________________________________________________________________________
+
+Shell scripts
+
+#!/bin/bash
+
+date
+sleep 5
+echo foo
+
+bash ./<file_name>
+
+с allias се config-ва файла
+примерно allias <name>= <command>
+
+allias 'c=cowsay'
+
+пишем нови команди в bashrc
+
+
+ПРОМЕНЛИВИ:
+таблица с променливи: set| less
+
+
+<name>= <value>
+foo = bar
+
+cowsay "foo: ${foo}"
+<foo: bar>
+
+enviorment variables- живеят в ОС, не в процеса
+
+export <name>= <value>
+
+echo ${PATH}
+можем да променяме:
+export PATH = /home
+.
+.
+.
+export PATH= /home/programs

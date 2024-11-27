@@ -1,0 +1,93 @@
+cmd -xxd<file_name> | head
+
+file<file_name>- Какъв е файла
+
+.wav- raw files for sounds
+
+cat image.png| aplay (aplay- са драйвери за звук)
+
+_____________________________________________
+Типове данни в С
+
+#include <stdint.h>_ гарантира типове с определен размер
+#include <stdbool.h>
+
+
+off_t- виж какво е
+typedef int other_name
+
+typedef struct _attribute_((packed)) test{
+	uint8_t int;
+	
+}test;- маха структурата от namespace на структурите
+
+_____________________________________________
+2016 SE-02
+ls /srv/sample-data/03-c/2016-SE-02
+
+#include <err.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdint.h>
+
+
+int get_file_size(int fd){
+	struct stat file_stats;
+	
+	if(fstat(fd,& file_stats)==-1){
+		err(1,"%s","error\namespace");
+	}
+	
+	ретурн file_stats.st_size;??????
+}
+
+int main(int argc, char* argv[]){
+	if(argc!=4){
+		errx(1,"not enough args");
+	}
+	
+	int f1= open(argv[1],O_RDONLY);
+	
+	if(f1==-1){
+		err(1,"%s","f1 not opened");
+	}
+	
+	int f2= open(argv[2],O_RDONLY);
+	
+	if(f2==-1){
+		err(1,"%s","f1 not opened");
+	}
+	
+	int f3= open(argv[3],O_WRONLY|O_TRUNCT|O_CREAT, S_IRUSR|S_IWUSR);
+	
+	if(f3==-1){
+		err(1,"%s","f1 not opened");
+	}
+	
+	int f1_size=get_file_size(f1);
+	int f2_size=get_file_size(f2);
+	
+	if((f1% 2*32)!=0 ){
+	}
+	
+	ssize_t read_flag;
+	pair p;
+	
+	while((read_flag= read(f1,&p,sizeof(p)))>0){
+		
+		if(p.offset* sizeof(uint32_t) >= f2_size|| (p.offset + p.length)*sizeof(uint32_t)...{
+			
+		}
+	}
+	
+	close (f1);
+	close (f2);
+	close (f3);
+	
+}
+
+_____________________________________________
+
+
+int offset;
+read(idx, &offset,sizeof(offset))
